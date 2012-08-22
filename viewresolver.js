@@ -1,6 +1,7 @@
 var _ = require('lodash'),
 	Handlebars = require('handlebars'),
 	walk = require('walk'),
+	path = require('path'),
 	fs = require('fs');
 
 var ViewResolver = function(options) {
@@ -26,10 +27,11 @@ ViewResolver.prototype.get = function(name, callback) {
 *    val: the contents of the file
 **/
 ViewResolver.prototype.all = function(callback) {
-	var dict = {};
+	var dict = {},
+		basePath = path.normalize(this.base);
 
 	// walk the folder and return an object with all
-	var walker = walk.walk(this.base, {followLinks: false});
+	var walker = walk.walk(basePath, {followLinks: false});
 
 	walker.on('file', function(root, stats, next) {
 		if (stats.error) {
@@ -37,7 +39,7 @@ ViewResolver.prototype.all = function(callback) {
 		}
 		else {
 			fs.readFile(stats.name, 'utf-8', function(err, data) {
-				dict[stats.name] = data;
+				dict[stats.name.substr(basePath.length)] = data;
 				next();
 			});
 		}
