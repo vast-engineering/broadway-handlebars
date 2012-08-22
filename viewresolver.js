@@ -6,10 +6,11 @@ var _ = require('lodash'),
 
 var ViewResolver = function(options) {
 	var defaults = {
-		base: process.cwd() + '/',
+		base: process.cwd(),
 		ext: "html"
 	};
 	this.options = _.extend(defaults, options);
+	this.regexExt = new RegExp("\\." + this.options.ext + "$");
 };
 
 /**
@@ -27,8 +28,9 @@ ViewResolver.prototype.get = function(name, callback) {
 *    val: the contents of the file
 **/
 ViewResolver.prototype.all = function(callback) {
-	var dict = {},
-		basePath = path.normalize(this.base);
+	var that = this,
+		dict = {},
+		basePath = path.normalize(this.options.base);
 
 	// walk the folder and return an object with all
 	var walker = walk.walk(basePath, {followLinks: false});
@@ -37,11 +39,16 @@ ViewResolver.prototype.all = function(callback) {
 		if (stats.error) {
 			callback(stats.error);
 		}
-		else {
-			fs.readFile(stats.name, 'utf-8', function(err, data) {
-				dict[stats.name.substr(basePath.length)] = data;
+		else if (that.regexExt.test(stats.name)) {
+			var file = root + '/' + stats.name;
+			fs.readFile(file, 'utf-8', function(err, data) {
+				var key = file.replace(basePath + '/', '').replace(that.regexExt, '');
+				dict[key] = data;
 				next();
 			});
+		}
+		else {
+			next();
 		}
 	});
 

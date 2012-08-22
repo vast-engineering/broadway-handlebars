@@ -6,7 +6,7 @@ var http = require('http'),
 var app = new broadway.App();
 app.use(new bwHandlebars(), { /* defaults are ok so empty being passed */ });
 
-app.render('tests/hello', { 
+app.render('tests/index', { 
 	spanish: {
 		hello: 'Hola' 
 	},

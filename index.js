@@ -54,11 +54,11 @@ bwHandlebars.prototype.attach = function (options) {
 
 					// register each partial in case it is needed by view.
 					_.each(dict, function(markup, key) {
-						Handlebars.registerPartial(key, markup);
+						Handlebars.registerPartial(key.replace(/\//g, '.'), markup);
 					});
 
 					// Compile and render the top level view.
-					template = _compile(dict[view], markup);
+					template = _compile(view, dict[view]);
 					_render(template, data, callback);
 				}
 
