@@ -33,7 +33,8 @@
   "dependencies": {
   	"lodash": "*",
   	"handlebars": "*",
-    "broadway": "*"
+    "broadway": "*",
+    "walk": "*"
 	},
   "devDependencies": {
     "optimist": "*"
