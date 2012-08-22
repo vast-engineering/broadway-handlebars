@@ -45,13 +45,20 @@ bwHandlebars.prototype.attach = function (options) {
 		else {
 
 			// otherwise get and compile.
-			viewResolver.get(view, function(err, markup) {
+			viewResolver.all(function(err, dict) {
 
 				if (err) {
 					callback(err);
 				}
 				else {
-					template = _compile(view, markup);
+
+					// register each partial in case it is needed by view.
+					_.each(dict, function(markup, key) {
+						Handlebars.registerPartial(key, markup);
+					});
+
+					// Compile and render the top level view.
+					template = _compile(dict[view], markup);
 					_render(template, data, callback);
 				}
 
