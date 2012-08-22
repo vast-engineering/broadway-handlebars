@@ -39,7 +39,7 @@ bwHandlebars.prototype.attach = function (options) {
 		var template = templateCache[view];
 
 		// are we in debug or was it already compiled
-		if (!options.debug && template) {
+		if (!options.development && template) {
 			_render(template, data, callback);
 		}
 		else {
