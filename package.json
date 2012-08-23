@@ -34,7 +34,7 @@
   	"lodash": "*",
   	"handlebars": "*",
     "broadway": "*",
-    "walk": "*"
+    "findit": "*"
 	},
   "devDependencies": {
     "optimist": "*"

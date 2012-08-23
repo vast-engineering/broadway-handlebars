@@ -33,7 +33,7 @@ bwHandlebars.prototype.attach = function (options) {
 	* Attaches to a Broadway app and exposes the render function
 	* @params view {String} The name of the view to render.  This will be used by the view resolver to pull markup from file system (node.js) or other (client js)
 	* @params data {Object} The view model to use when rendering.
-	* @params callback {Function} Notifies when render is complete.  callback(err, )
+	* @params callback {Function} Notifies when render is complete.  callback(err, data)
 	**/
 	this.render = function (view, data, callback) {
 		var template = templateCache[view];
