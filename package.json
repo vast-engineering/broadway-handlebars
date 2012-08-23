@@ -34,7 +34,8 @@
   	"lodash": "*",
   	"handlebars": "*",
     "broadway": "*",
-    "findit": "*"
+    "findit": "*",
+    "async": "*"
 	},
   "devDependencies": {
     "optimist": "*"

@@ -23,6 +23,19 @@ bwHandlebars.prototype.attach = function (options) {
 	var viewResolver = options.viewResolver || new defaultViewResolver(),
 		templateCache = {};
 
+
+	// Override the default version of each.
+	Handlebars.registerHelper('each', function(context, options) {
+		var buffer = [];
+
+		_.each(context, function(v, k) {
+			buffer.push(options.fn({ key: k, value: v }));
+		});
+
+		return buffer.join('');
+	});
+
+
 	// Inject external handlebar helpers.
 	_.each(options.helpers, function(fn, name) {
 		Handlebars.registerHelper(name, fn);

@@ -1,3 +1,3 @@
-{{#with english}}{{> tests.hello}}{{/with}}
-{{#with french}}{{> tests.hello}}{{/with}}
-{{> tests.hello spanish}}
+{{#each languages}}
+	{{> tests.hello this}}
+{{/each}}
