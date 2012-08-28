@@ -49,6 +49,27 @@ bwHandlebars.prototype.attach = function (options) {
 		return buffer.join('');
 	});
 
+	// if with evaluation.
+	Handlebars.registerHelper('ifeval', function(expression, options) {
+        var conditional = false;
+        with(this) {
+            conditional = eval(expression);
+        }
+        return conditional ? options.fn(this) : options.inverse(this);
+    });
+
+    // Similar to standard print {{value}}, but with an optional fallback value. 
+    // Ex: {{def foo def="goo"}} will print the value of foo if exists, otherwise it will print "goo"
+    // If def is omitted, then an empty string is printed.
+	Handlebars.registerHelper('def', function(expression, options) {
+        var val = null,
+            def = options.hash.def || '';
+
+        with(this) {
+            val = eval(expression);
+        }
+        return val ? val : def;
+    });
 
 	// Inject external handlebar helpers.
 	_.each(options.helpers, function(fn, name) {
