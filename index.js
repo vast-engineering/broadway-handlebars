@@ -65,9 +65,14 @@ bwHandlebars.prototype.attach = function (options) {
         var val = null,
             def = options.hash.def || '';
 
-        with(this) {
-            val = eval(expression);
-        }
+        try {
+	        with(this) {
+	            val = eval(expression);
+	        }
+	    }
+	    catch (e) {
+	    	val = expression;
+	    }
         return val ? val : def;
     });
 
