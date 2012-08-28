@@ -126,7 +126,7 @@ bwHandlebars.prototype.attach = function (options) {
 	};
 
 	var _render = function(view, data, callback) {
-		template = templateCache[view];
+		var template = templateCache[view];
 
 		// render
 		try {
