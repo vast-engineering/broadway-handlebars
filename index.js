@@ -35,6 +35,20 @@ bwHandlebars.prototype.attach = function (options) {
 		return buffer.join('');
 	});
 
+	// Create a range function that will iterate numbers from 0 -> max
+	// This is mirrors the underscore _.range function.
+	// http://documentcloud.github.com/underscore/#range
+	Handlebars.registerHelper('range', function(stop, options) {
+		var buffer = [],
+			range = _.range((options.hash.start || 0), stop, (options.hash.step || 1));
+
+		_.each(range, function(v, k) {
+			buffer.push(options.fn({ key: k, value: v }));
+		});
+
+		return buffer.join('');
+	});
+
 
 	// Inject external handlebar helpers.
 	_.each(options.helpers, function(fn, name) {
@@ -53,7 +67,7 @@ bwHandlebars.prototype.attach = function (options) {
 
 		// are we in debug or was it already compiled
 		if (!options.development && template) {
-			_render(template, data, callback);
+			_render(view, data, callback);
 		}
 		else {
 
@@ -71,8 +85,8 @@ bwHandlebars.prototype.attach = function (options) {
 					});
 
 					// Compile and render the top level view.
-					template = _compile(view, dict[view]);
-					_render(template, data, callback);
+					_compile(view, dict[view]);
+					_render(view, data, callback);
 				}
 
 			});
@@ -90,13 +104,15 @@ bwHandlebars.prototype.attach = function (options) {
 		return templateCache[view];
 	};
 
-	var _render = function(template, data, callback) {
+	var _render = function(view, data, callback) {
+		template = templateCache[view];
+
 		// render
 		try {
 			callback(null, template(data));
 		}
 		catch (e) {
-			callback(e, e.message + ' ' + e.stack);
+			callback('Error in view - ' + view + ': ' + (e.stack || e));
 		}
 	};
 
