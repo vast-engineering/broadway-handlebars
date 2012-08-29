@@ -1,5 +1,5 @@
 var _ = require('lodash'),
-	handlebars = require('handlebars'),
+	handlebars = require('tommydudebreaux-handlebars'),
 	defaultViewResolver = require('./viewresolver');
 
 var bwHandlebars = function() { };
