@@ -1,5 +1,5 @@
 var _ = require('lodash'),
-	Handlebars = require('handlebars'),
+	handlebars = require('handlebars'),
 	defaultViewResolver = require('./viewresolver');
 
 var bwHandlebars = function() { };
@@ -16,7 +16,11 @@ bwHandlebars.prototype.attach = function (options) {
 		helpers: {},
 		optimize: false,
 		development: true
-	};
+	},
+
+	// support the factory if exists - https://github.com/tommydudebreaux/handlebars.js
+	// otherwise, use the default singleton approach here.
+	Handlebars = handlebars.create ? handlebars.create() : handlebars;
 
 	_.extend(defaults, options);
 
