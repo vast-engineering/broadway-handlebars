@@ -12,19 +12,22 @@ var bwHandlebars = function() { };
 * @params options.viewResolver {Object} if absent, then a file system view resolver is used to get the markup from the file system.
 **/
 bwHandlebars.prototype.attach = function (options) {
-	var defaults = {
-		helpers: {},
-		optimize: false,
-		development: true
-	},
 
 	// support the factory if exists - https://github.com/tommydudebreaux/handlebars.js
 	// otherwise, use the default singleton approach here.
-	Handlebars = handlebars.create ? handlebars.create() : handlebars;
+	var Handlebars = handlebars.create ? handlebars.create() : handlebars;
 
-	_.extend(defaults, options);
+	_.defaults(options, {
+		helpers: {},
+		optimize: false,
+		development: true,
+		view: {
+			path: process.cwd(),
+			ext: "html"
+		}
+	});
 
-	var viewResolver = options.viewResolver || new defaultViewResolver(),
+	var viewResolver = options.viewResolver || new defaultViewResolver(options.view),
 		templateCache = {};
 
 
@@ -33,7 +36,12 @@ bwHandlebars.prototype.attach = function (options) {
 		var buffer = [];
 
 		_.each(context, function(v, k) {
-			buffer.push(options.fn({ key: k, value: v }));
+			try {
+				buffer.push(options.fn({ key: k, value: v }));
+			}
+			catch (e) {
+				buffer.push(e);
+			}
 		});
 
 		return buffer.join('');
@@ -47,7 +55,12 @@ bwHandlebars.prototype.attach = function (options) {
 			range = _.range((options.hash.start || 0), stop, (options.hash.step || 1));
 
 		_.each(range, function(v, k) {
-			buffer.push(options.fn({ key: k, value: v }));
+			try {
+				buffer.push(options.fn({ key: k, value: v }));
+			}
+			catch (e) {
+				buffer.push(e);
+			}
 		});
 
 		return buffer.join('');
@@ -130,7 +143,7 @@ bwHandlebars.prototype.attach = function (options) {
 			markup = markup.replace(/\s+/gi, ' ');
 		}
 
-		templateCache[view] = Handlebars.compile(markup);
+		templateCache[view] = Handlebars.compile(markup || "View Not Found - " + view);
 		return templateCache[view];
 	};
 

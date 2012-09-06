@@ -2,11 +2,14 @@ var http = require('http'),
 	bwHandlebars = require('../index.js'),
 	broadway = require('broadway');
 
-
 var app = new broadway.App();
-app.use(new bwHandlebars(), { /* defaults are ok so empty being passed */ });
+app.use(new bwHandlebars(), { 
+	view: {
+		base: ["./tests/overrides", "./tests/default"]
+	}
+});
 
-app.render('tests/index', { 
+app.render('index', { 
 	languages: {
 		spanish: {
 			hello: 'Hola' 
@@ -19,6 +22,7 @@ app.render('tests/index', {
 		}
 	}
 }, function(err, content) {
+	console.log(err || '');
 	console.log(content);
 	process.exit();
 });

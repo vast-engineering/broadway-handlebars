@@ -5,32 +5,24 @@ var _ = require('lodash'),
     fs = require('fs');
 
 var ViewResolver = function(options) {
-    var defaults = {
+    this.options = _.defaults(options, {
         base: process.cwd(),
         ext: "html"
-    };
-    this.options = _.extend(defaults, options);
-    this.regexExt = new RegExp("\\." + this.options.ext + "$");
+    });
+
+    if (!(this.options.base instanceof Array)) {
+        this.options.base = [this.options.base];
+    }
 };
 
-/**
-* Retrieves the markup for a given view.
-*
-**/
-ViewResolver.prototype.get = function(name, callback) {
-    fs.readFile(this.options.base + name, 'utf-8', callback);
-};
+// var getSingle = function(name, callback) {
+//     fs.readFile(this.options.base + name, 'utf-8', callback);
+// };
 
-/**
-* Retrieves the markup for all views in a given folder.  
-* Return will be in format of 
-*    key: path relative to the base
-*    val: the contents of the file
-**/
-ViewResolver.prototype.all = function(callback) {
-    var that = this,
+var getAll = function(base, ext, callback) {
+    var regexExt = new RegExp("\\." + ext + "$"),
         dict = {},
-        basePath = path.normalize(this.options.base);
+        basePath = path.normalize(base);
 
     // walk the contents of the base path
     var finder = findit.find(basePath),
@@ -39,7 +31,7 @@ ViewResolver.prototype.all = function(callback) {
     // for each file...
     finder.on('file', function(file, stat) {
         // ...if this is a file of the expected extension...
-        if (that.regexExt.test(file)) {
+        if (regexExt.test(file)) {
             // ... then hold onto the path
             paths.push(file);
         }
@@ -62,7 +54,7 @@ ViewResolver.prototype.all = function(callback) {
                     }
                     else {
                         // simplify the key to be relative to base path and omit file extension
-                        var key = path.replace(basePath + '/', '').replace(that.regexExt, '');
+                        var key = path.replace(basePath + '/', '').replace(regexExt, '');
                         dict[key] = data;
                         callback();
                     }
@@ -79,6 +71,47 @@ ViewResolver.prototype.all = function(callback) {
             }
 
         );
+    });
+};
+
+// /**
+// * Retrieves the markup for a given view.
+// *
+// **/
+// ViewResolver.prototype.get = function(name, callback) {
+//     var ops = _.map(this.options.base, function(base) {
+//         return function(cb) {
+//             getSingle(base + name, cb);
+//         };
+//     });
+
+//     async.parallel(ops, function(err, results) {
+//         var markup = _.find(results, function(r) { return r != null; });
+//         callback(markup || 'Could not locate the view', markup);
+//     });
+    
+// };
+
+/**
+* Retrieves the markup for all views in a given folder.  
+* Return will be in format of 
+*    key: path relative to the base
+*    val: the contents of the file
+**/
+ViewResolver.prototype.all = function(callback) {
+    var that = this,
+        ops = _.map(this.options.base, function(base) {
+            return function(cb) {
+                getAll(base, that.options.ext, cb);
+            };
+        });
+
+    async.parallel(ops.reverse(), function(err, results) {
+        var dict = results.splice(0, 1)[0];
+        _.each(results, function(r) {
+            _.extend(dict, r);
+        });
+        callback(null, dict);
     });
 };
 
