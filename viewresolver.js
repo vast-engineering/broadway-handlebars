@@ -15,10 +15,6 @@ var ViewResolver = function(options) {
     }
 };
 
-// var getSingle = function(name, callback) {
-//     fs.readFile(this.options.base + name, 'utf-8', callback);
-// };
-
 var getAll = function(base, ext, callback) {
     var regexExt = new RegExp("\\." + ext + "$"),
         dict = {},
@@ -74,23 +70,7 @@ var getAll = function(base, ext, callback) {
     });
 };
 
-// /**
-// * Retrieves the markup for a given view.
-// *
-// **/
-// ViewResolver.prototype.get = function(name, callback) {
-//     var ops = _.map(this.options.base, function(base) {
-//         return function(cb) {
-//             getSingle(base + name, cb);
-//         };
-//     });
 
-//     async.parallel(ops, function(err, results) {
-//         var markup = _.find(results, function(r) { return r != null; });
-//         callback(markup || 'Could not locate the view', markup);
-//     });
-    
-// };
 
 /**
 * Retrieves the markup for all views in a given folder.  
