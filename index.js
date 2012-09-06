@@ -155,7 +155,7 @@ bwHandlebars.prototype.attach = function (options) {
 			callback(null, template(data));
 		}
 		catch (e) {
-			callback('Error in view - ' + view + ': ' + (e.stack || e));
+			callback('Error in view - ' + view + ': ' + (e.message) + '\n' + (e.stack || ''));
 		}
 	};
 
