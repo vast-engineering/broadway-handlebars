@@ -9,6 +9,8 @@ app.use(new bwHandlebars(), {
 	}
 });
 
+var tests = ['render', 'templates'];
+
 app.render('index', { 
 	languages: {
 		spanish: {
@@ -24,5 +26,21 @@ app.render('index', {
 }, function(err, content) {
 	console.log(err || '');
 	console.log(content);
-	process.exit();
+	tests.splice(0,1);
 });
+
+app.templates(function(err, dict) {
+	console.log(dict);
+	tests.splice(1,1);
+});
+
+
+var checkExit = function() {
+	if (tests.length == 0) {
+		process.exit();
+	} else {
+		process.nextTick(checkExit);
+	}
+};
+
+process.nextTick(checkExit);
