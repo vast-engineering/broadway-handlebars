@@ -159,6 +159,10 @@ bwHandlebars.prototype.attach = function (options) {
 		}
 	};
 
+	this.templates = function(callback) {
+		viewResolver.all(callback);
+	};
+
 };
 
 module.exports = bwHandlebars;
