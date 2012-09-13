@@ -30,8 +30,9 @@ app.render('index', {
 });
 
 app.templates(function(err, dict) {
+	console.log("Templates");
 	console.log(dict);
-	tests.splice(1,1);
+	tests.splice(0,1);
 });
 
 

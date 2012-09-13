@@ -1,6 +1,6 @@
 {
   "name": "broadway-handlebars",
-   "version": "0.1.7",
+   "version": "0.1.9",
    "main": "index",
    "description": "Plugin for flatiron/broadway for rendering with the handlebars view engine.",
    "keywords": [
@@ -33,6 +33,7 @@
   "dependencies": {
   	"lodash": "*",
   	"tommydudebreaux-handlebars": "*",
+    "handlebars-browserify": "*",
     "broadway": "*",
     "findit": "*",
     "async": "*"
