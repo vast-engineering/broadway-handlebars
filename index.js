@@ -38,7 +38,8 @@ bwHandlebars.prototype.attach = function (options) {
 
 	// Override the default version of each.
 	Handlebars.registerHelper('each', function(context, options) {
-		var buffer = [];
+		var buffer = [],
+			that = this;
 
 		_.each(context, function(v, k) {
 			try {
