@@ -42,7 +42,7 @@ bwHandlebars.prototype.attach = function (options) {
 
 		_.each(context, function(v, k) {
 			try {
-				buffer.push(options.fn({ key: k, value: v }));
+				buffer.push(options.fn(_.extend({ key: k, value: v }, that)));
 			}
 			catch (e) {
 				buffer.push(e);
@@ -57,11 +57,12 @@ bwHandlebars.prototype.attach = function (options) {
 	// http://documentcloud.github.com/underscore/#range
 	Handlebars.registerHelper('range', function(stop, options) {
 		var buffer = [],
-			range = _.range((options.hash.start || 0), stop, (options.hash.step || 1));
+			range = _.range((options.hash.start || 0), stop, (options.hash.step || 1)),
+			that = this;
 
 		_.each(range, function(v, k) {
 			try {
-				buffer.push(options.fn({ key: k, value: v }));
+				buffer.push(options.fn( _.extend({ key: k, value: v }, that)));
 			}
 			catch (e) {
 				buffer.push(e);
