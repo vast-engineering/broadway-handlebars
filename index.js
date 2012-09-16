@@ -43,7 +43,7 @@ bwHandlebars.prototype.attach = function (options) {
 
 		_.each(context, function(v, k) {
 			try {
-				buffer.push(options.fn(_.extend({ key: k, value: v }, that)));
+				buffer.push(options.fn(_.extend(_.clone(that), { key: k, value: v })));
 			}
 			catch (e) {
 				buffer.push(e);
@@ -63,7 +63,7 @@ bwHandlebars.prototype.attach = function (options) {
 
 		_.each(range, function(v, k) {
 			try {
-				buffer.push(options.fn( _.extend({ key: k, value: v }, that)));
+				buffer.push(options.fn( _.extend(_.clone(that), { key: k, value: v })));
 			}
 			catch (e) {
 				buffer.push(e);
