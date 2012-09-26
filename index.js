@@ -1,11 +1,6 @@
 var _ = require('lodash'),
-	handlebars = (require('tommydudebreaux-handlebars')),   // parens will prevent browserify from packaging.
-	defaultViewResolver = require('./viewresolver');
-
-// for browserify, if not defined, then we are in browserify and we need to load the client one.
-if (!handlebars) {
-	handlebars = require('handlebars-browserify');
-}
+	handlebars = require('tommydudebreaux-handlebars'),   // parens will prevent browserify from packaging.
+	defaultViewResolver = !process.browser ? require('./viewresolver') : null;
 
 var bwHandlebars = function() { };
 
