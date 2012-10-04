@@ -51,12 +51,21 @@ bwHandlebars.prototype.attach = function (options) {
 	// Create a range function that will iterate numbers from 0 -> max
 	// This is mirrors the underscore _.range function.
 	// http://documentcloud.github.com/underscore/#range
-	Handlebars.registerHelper('range', function(stop, options) {
+	Handlebars.registerHelper('range', function(expression, options) {
 		var buffer = [],
-			range = _.range((options.hash.start || 0), stop, (options.hash.step || 1)),
+			stop = 0,
 			that = this;
 
-		_.each(range, function(v, k) {
+		if (typeof(expression) == 'string') {	
+			with(this) { 
+				stop = eval(expression);
+			}
+		}
+		else {
+			stop = expression;
+		}
+
+		_.each(_.range((options.hash.start || 0), stop, (options.hash.step || 1)), function(v, k) {
 			try {
 				buffer.push(options.fn( _.extend(_.clone(that), { key: k, value: v })));
 			}
