@@ -31,7 +31,7 @@
     "test": "node tests/example.js"
   },
   "dependencies": {
-  	"lodash": "*",
+  	"lodash": "0.7.0",
   	"tommydudebreaux-handlebars": "*",
     "broadway": "*",
     "findit": "*",
