@@ -22,7 +22,7 @@ bwHandlebars.prototype.attach = function (options) {
 		optimize: false,
 		development: true,
 		view: {
-			path: process.cwd(),
+			base: process.cwd(),
 			ext: "html"
 		}
 	});

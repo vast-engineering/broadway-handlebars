@@ -4,6 +4,14 @@ var _ = require('lodash'),
     async = require('async'),
     fs = require('fs');
 
+/**
+ * A ViewResolver resolves template names to template contents. This default implementation treats template names as
+ * relative paths and reads files at those locations as template contents.
+ *
+ * @param options.ext  {String}          file extension. defaults to "html".
+ * @param options.base {String}, {Array} base path or paths. will attempt to resolve template names relative to these
+ *                                       paths in order
+ **/
 var ViewResolver = function(options) {
     this.options = _.defaults(options, {
         base: process.cwd(),
