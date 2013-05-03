@@ -1,5 +1,5 @@
 var _ = require('lodash'),
-	handlebars = require('tommydudebreaux-handlebars'),   // parens will prevent browserify from packaging.
+	handlebars = require('handlebars'),   // parens will prevent browserify from packaging.
 	defaultViewResolver = !process.browser ? require('./viewresolver') : null;
 
 var bwHandlebars = function() { };

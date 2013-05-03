@@ -1,6 +1,6 @@
 {
   "name": "broadway-handlebars",
-   "version": "0.1.14",
+   "version": "0.2.0",
    "main": "index",
    "description": "Plugin for flatiron/broadway for rendering with the handlebars view engine.",
    "keywords": [
@@ -31,14 +31,14 @@
     "test": "node tests/example.js"
   },
   "dependencies": {
-  	"lodash": "0.7.0",
-  	"tommydudebreaux-handlebars": "*",
-    "broadway": "*",
-    "findit": "*",
-    "async": "*"
+  	"lodash": "1.0.1",
+  	"handlebars": "1.0.x",
+    "broadway": "0.2.6",
+    "findit": "0.1.2",
+    "async": "0.2.5"
 	},
   "devDependencies": {
-    "optimist": "*"
+    "tap": "*"
     },
   "optionalDependencies": {},
   "homepage": "http://vastdevblog.vast.com/"
