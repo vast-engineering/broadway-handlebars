@@ -28,7 +28,7 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "node tests/example.js"
+    "test": "node tests/unit.js"
   },
   "dependencies": {
   	"lodash": "1.0.1",
