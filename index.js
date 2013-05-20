@@ -159,15 +159,19 @@ bwHandlebars.prototype.attach = function (options) {
 	};
 
 	var _render = function(view, data, callback) {
-		var template = templateCache[view];
+		var template = templateCache[view],
+			html = null,
+			err = null;
 
 		// render
 		try {
-			callback(null, template(data));
+			html = template(data);
 		}
 		catch (e) {
-			callback('Error in view - ' + view + ': ' + (e.message) + '\n' + (e.stack || ''));
+			err = 'Error in view - ' + view + ': ' + (e.message) + '\n' + (e.stack || '');
 		}
+
+		return _.isFunction(callback) ? callback(err, html) : null;
 	};
 
 	this.templates = function(callback) {
