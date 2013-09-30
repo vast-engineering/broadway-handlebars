@@ -29,7 +29,7 @@
   },
   "scripts": {
     "test": "node tests/unit.js",
-    "postinstall": "lodash include=each,defaults,extend,clone,range,map exports=node",
+    "postinstall": "lodash include=each,defaults,extend,clone,range,map exports=node && rm -rf node_modules/lodash-cli",
     "preinstall": "npm install lodash-cli"
   },
   "dependencies": {
