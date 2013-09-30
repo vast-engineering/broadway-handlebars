@@ -1,6 +1,13 @@
-var _ = require('lodash'),
-	handlebars = require('handlebars'),   // parens will prevent browserify from packaging.
-	defaultViewResolver = !process.browser ? require('./viewresolver') : null;
+// var _ = {
+// 		each: require('lodash.each'),
+// 		defaults: require('lodash.defaults'),
+// 		extend: require('lodash.extend'),
+// 		clone: require('lodash.clone'),
+// 		range: require('lodash.range')
+// 	},
+var _ = require('./lodash.custom.js');
+var handlebars = require('handlebars');   // parens will prevent browserify from packaging.
+var defaultViewResolver = !process.browser ? require('./viewresolver') : null;
 
 var bwHandlebars = function() { };
 
@@ -175,7 +182,7 @@ bwHandlebars.prototype.attach = function (options) {
 			err = 'Error in view - ' + view + ': ' + (e.message) + '\n' + (e.stack || '');
 		}
 
-		return _.isFunction(callback) ? callback(err, html) : null;
+		return typeof(callback) === 'function' ? callback(err, html) : null;
 	};
 
 	this.templates = function(callback) {

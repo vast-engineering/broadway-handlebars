@@ -28,10 +28,11 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "node tests/unit.js"
+    "test": "node tests/unit.js",
+    "postinstall": "lodash include=each,defaults,extend,clone,range,map exports=node",
+    "preinstall": "npm install lodash-cli -g"
   },
   "dependencies": {
-    "lodash": "~2.2.0",
     "handlebars": "~1.0.12",
     "findit": "0.1.2",
     "async": "0.2.9"

@@ -1,4 +1,4 @@
-var _ = require('lodash'),
+var _ = require('./lodash.custom.js'),
     findit = require('findit'),
     path = require('path'),
     async = require('async'),
