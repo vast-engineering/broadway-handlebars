@@ -1,6 +1,6 @@
 {
   "name": "broadway-handlebars",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "main": "index",
   "description": "Plugin for flatiron/broadway for rendering with the handlebars view engine.",
   "keywords": [
