@@ -5,7 +5,7 @@
 // 		clone: require('lodash.clone'),
 // 		range: require('lodash.range')
 // 	},
-var _ = require('./lodash.custom.js');
+var _ = require('lodash');
 var handlebars = require('handlebars');   // parens will prevent browserify from packaging.
 var defaultViewResolver = !process.browser ? require('./viewresolver') : null;
 
