@@ -179,7 +179,7 @@ bwHandlebars.prototype.attach = function (options) {
 			html = template(data);
 		}
 		catch (e) {
-			err = 'Error in view - ' + view + ': ' + (e.message) + '\n' + (e.stack || '');
+			err = e;
 		}
 
 		return typeof(callback) === 'function' ? callback(err, html) : null;

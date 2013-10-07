@@ -1,8 +1,9 @@
-var http = require('http'),
-	bwHandlebars = require('../index.js'),
-	broadway = require('broadway'),
-	tap = require('tap'),
-	test = tap.test;
+var http = require('http');
+var bwHandlebars = require('../index.js');
+var broadway = require('broadway');
+var tap = require('tap');
+var test = tap.test;
+var fs = require('fs');
 
 var app = new broadway.App();
 app.use(new bwHandlebars(), { 
@@ -11,7 +12,7 @@ app.use(new bwHandlebars(), {
 	}
 });
 
-var gold = require('fs').readFileSync(require.resolve('./gold.html'), 'utf-8');
+var gold = fs.readFileSync(require.resolve('./gold.html'), 'utf-8');
 
 test("Test render", function(t) {
 
@@ -50,3 +51,18 @@ test("Test templates and view resolver", function(t) {
 	});
 });
 
+test('test missing template', function (t) {
+	app.render('hoffa', {}, function (e, html) {
+		t.ok(e, 'expecting error');
+		t.ok(e instanceof Error, 'error should be an Error');
+		t.end();
+	})
+});
+
+test('test template with compile error', function (t) {
+	app.render('bad', {}, function (e, html) {
+		t.ok(e, 'expecting error');
+		t.ok(e instanceof Error, 'error should be an Error');
+		t.end();
+	})
+})
