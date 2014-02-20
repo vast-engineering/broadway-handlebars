@@ -7,7 +7,7 @@
 // 	},
 var _ = require('lodash');
 var handlebars = require('handlebars');   // parens will prevent browserify from packaging.
-var defaultViewResolver = !process.browser ? require('./viewresolver') : null;
+var defaultViewResolver = (typeof(window) === 'undefined') ? require('./viewresolver') : null;
 
 var bwHandlebars = function() { };
 
@@ -29,7 +29,7 @@ bwHandlebars.prototype.attach = function (options) {
 		optimize: false,
 		development: true,
 		view: {
-			base: process.cwd(),
+			base: (typeof(window) === 'undefined') ? process.cwd() : null,
 			ext: "html"
 		}
 	});
@@ -63,8 +63,8 @@ bwHandlebars.prototype.attach = function (options) {
 			stop = 0,
 			that = this;
 
-		if (typeof(expression) == 'string') {	
-			with(this) { 
+		if (typeof(expression) == 'string') {
+			with(this) {
 				stop = eval(expression);
 			}
 		}
@@ -93,7 +93,7 @@ bwHandlebars.prototype.attach = function (options) {
     return conditional ? options.fn(this) : options.inverse(this);
   });
 
-    // Similar to standard print {{value}}, but with an optional fallback value. 
+    // Similar to standard print {{value}}, but with an optional fallback value.
     // Ex: {{def foo def="goo"}} will print the value of foo if exists, otherwise it will print "goo"
     // If def is omitted, then an empty string is printed.
 	Handlebars.registerHelper('def', function(expression, options) {
@@ -108,7 +108,7 @@ bwHandlebars.prototype.attach = function (options) {
     catch (e) {
     	val = expression;
     }
-    
+
     return val ? val : def;
   });
 
@@ -117,7 +117,7 @@ bwHandlebars.prototype.attach = function (options) {
 		Handlebars.registerHelper(name, fn);
 	});
 
-	
+
 	/**
 	* Attaches to a Broadway app and exposes the render function
 	* @params view {String} The name of the view to render.  This will be used by the view resolver to pull markup from file system (node.js) or other (client js)
