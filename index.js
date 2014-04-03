@@ -165,7 +165,9 @@ bwHandlebars.prototype.attach = function (options) {
 			markup = markup.replace(/\s+/gi, ' ');
 		}
 
-		templateCache[view] = markup ? Handlebars.compile(markup) : function() { throw new Error("View Not Found - " + view); };
+		templateCache[view] = markup ? Handlebars.compile(markup) : function() { 
+		    logger.error("View Not Found - " + view);
+		};
 		return templateCache[view];
 	};
 
