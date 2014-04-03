@@ -63,8 +63,8 @@ bwHandlebars.prototype.attach = function (options) {
 			stop = 0,
 			that = this;
 
-		if (typeof(expression) == 'string') {	
-			with(this) { 
+		if (typeof(expression) == 'string') {
+			with(this) {
 				stop = eval(expression);
 			}
 		}
@@ -93,7 +93,7 @@ bwHandlebars.prototype.attach = function (options) {
     return conditional ? options.fn(this) : options.inverse(this);
   });
 
-    // Similar to standard print {{value}}, but with an optional fallback value. 
+    // Similar to standard print {{value}}, but with an optional fallback value.
     // Ex: {{def foo def="goo"}} will print the value of foo if exists, otherwise it will print "goo"
     // If def is omitted, then an empty string is printed.
 	Handlebars.registerHelper('def', function(expression, options) {
@@ -108,16 +108,35 @@ bwHandlebars.prototype.attach = function (options) {
     catch (e) {
     	val = expression;
     }
-    
+
     return val ? val : def;
   });
+
+	// Allowing dynamic loading of partials based on value of variable in context
+	// Call is made like {{{partial "partial.root" partial_name ctx}}} or {{{partial full_partial_string ctx}}}
+	Handlebars.registerHelper('partial', function(root, name, ctx, hash) {
+		var ps = Handlebars.partials, path;
+		if (typeof name === 'object') {
+			var tmp = name;
+			name = '';
+			hash = ctx;
+			ctx = tmp;
+		} else if (typeof name === 'undefined') {
+			name = '';
+		};
+		path = root + ((name !== '') ? ('.' + name) : name);
+
+		if(typeof ps[path] != 'function')
+		  ps[path] = Handlebars.compile(ps[path]);
+		return ps[path](ctx, hash);
+	  });
 
 	// Inject external handlebar helpers.
 	_.each(options.helpers, function(fn, name) {
 		Handlebars.registerHelper(name, fn);
 	});
 
-	
+
 	/**
 	* Attaches to a Broadway app and exposes the render function
 	* @params view {String} The name of the view to render.  This will be used by the view resolver to pull markup from file system (node.js) or other (client js)
