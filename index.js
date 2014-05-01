@@ -112,6 +112,25 @@ bwHandlebars.prototype.attach = function (options) {
     return val ? val : def;
   });
 
+	// Allowing dynamic loading of partials based on value of variable in context
+	// Call is made like {{{partial "partial.root" partial_name ctx}}} or {{{partial full_partial_string ctx}}}
+	Handlebars.registerHelper('partial', function(root, name, ctx, hash) {
+		var ps = Handlebars.partials, path;
+		if (typeof name === 'object') {
+			var tmp = name;
+			name = '';
+			hash = ctx;
+			ctx = tmp;
+		} else if (typeof name === 'undefined') {
+			name = '';
+		};
+		path = root + ((name !== '') ? ('.' + name) : name);
+
+		if(typeof ps[path] != 'function')
+		  ps[path] = Handlebars.compile(ps[path]);
+		return ps[path](ctx, hash);
+	  });
+
 	// Inject external handlebar helpers.
 	_.each(options.helpers, function(fn, name) {
 		Handlebars.registerHelper(name, fn);
@@ -166,6 +185,7 @@ bwHandlebars.prototype.attach = function (options) {
 		}
 
 		templateCache[view] = markup ? Handlebars.compile(markup) : function() { throw new Error("View Not Found - " + view); };
+
 		return templateCache[view];
 	};
 
