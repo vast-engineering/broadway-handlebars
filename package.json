@@ -15,10 +15,15 @@
     "name": "Tommy Messbauer",
     "email": "tom.messbauer@gmail.com"
   },
+  "contributors": [
+    "Eric Capps",
+    "Marko Jankovic",
+    "Rastko Vukasinovic"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:tommymessbauer/broadway-handlebars.git"
+    "url": "git@github.com:vast-engineering/broadway-handlebars.git"
   },
   "directories": {
     "tests": "tests"
@@ -30,10 +35,10 @@
     "test": "node tests/unit.js"
   },
   "dependencies": {
-    "handlebars": "~1.0.12",
     "findit": "0.1.2",
     "async": "0.2.9",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "handlebars": "~1.3.0"
   },
   "devDependencies": {
     "tap": "~0.4.4",
