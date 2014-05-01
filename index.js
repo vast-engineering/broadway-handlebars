@@ -7,7 +7,7 @@
 // 	},
 var _ = require('lodash');
 var handlebars = require('handlebars');   // parens will prevent browserify from packaging.
-var defaultViewResolver = !process.browser ? require('./viewresolver') : null;
+var defaultViewResolver = (typeof(window) === 'undefined') ? require('./viewresolver') : null;
 
 var bwHandlebars = function() { };
 
@@ -29,7 +29,7 @@ bwHandlebars.prototype.attach = function (options) {
 		optimize: false,
 		development: true,
 		view: {
-			base: process.cwd(),
+			base: (typeof(window) === 'undefined') ? process.cwd() : null,
 			ext: "html"
 		}
 	});
