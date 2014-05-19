@@ -21,10 +21,14 @@ var ViewResolver = function(options) {
     if (!(this.options.base instanceof Array)) {
         this.options.base = [this.options.base];
     }
+
+    if (!(this.options.ext instanceof Array)) {
+        this.options.ext = [this.options.ext];
+    }
 };
 
 var getAll = function(base, ext, callback) {
-    var regexExt = new RegExp("\\." + ext + "$"),
+    var regexExt = new RegExp("\\." + ext.join('|\\.') + "$"),
         dict = {},
         basePath = path.normalize(base);
 
