@@ -6,6 +6,8 @@
 // 		range: require('lodash.range')
 // 	},
 var _ = require('lodash');
+var Minimize = require('minimize')
+var minimize = new Minimize();
 var handlebars = require('handlebars');   // parens will prevent browserify from packaging.
 var defaultViewResolver = (typeof(window) === 'undefined') ? require('./viewresolver') : null;
 
@@ -202,7 +204,14 @@ bwHandlebars.prototype.attach = function (options) {
 			err = e;
 		}
 
-		return typeof(callback) === 'function' ? callback(err, html) : null;
+        if (options.minify) {
+            minimize.parse(html, function (error, data) {
+                return typeof(callback) === 'function' ? callback(error, data) : null;
+            });
+		} else {
+			return typeof(callback) === 'function' ? callback(err, html) : null;
+		}
+
 	};
 
 	this.templates = function(callback) {
